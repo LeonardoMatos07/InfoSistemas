@@ -10,6 +10,11 @@ const create = async (req, res)=>{
                return res.status(400).send({hasError: true, erro: "Não foi possivel cadastrar o veículo, dados incompletos"})
           }
 
+          if(await Veiculo.findOne({renavam})){
+               logger.warn({msg:"O veiculo já está registrado"})
+               return res.status(400).send({hasError: true, erro: "O veiculo já está registrado"})
+          }
+
           veiculo = await Veiculo.create(req.body)
           logger.info({msg:"Veículo cadastrado com sucesso!"})
           return res.send({veiculo})
@@ -31,13 +36,39 @@ const read = async (req, res)=>{
                return res.status(400).send({hasError: true, erro: "Não foi possivel encontrar o veículo, dados incompletos"})
           }
 
-          veiculo = await Veiculo.find({renavam})
+          veiculo = await Veiculo.findOne({renavam})
 
-          if(!renavam){
+          if(!veiculo){
                logger.error({msg:"Veículo não encontrado, verifique seu renavam!"})
                return res.status(400).send({erro:"Veículo não encontrado, verifique seu renavam!"})
           }
           logger.info({msg:"Veículo encontrado!"})
+          return res.send({veiculo})
+
+     } catch(err){
+          logger.error({msg:"Erro ao encontrar veículo"})
+          res.status(400).send({erro:"Erro ao encontrar veículo"})
+     }
+}
+
+// readList retorna a lista de todos os veículos de uma determinada marca
+
+const readList = async (req, res)=>{
+     try{
+          const {marca} = req.body
+
+          if(!marca){
+               logger.error({msg:"Não foi possivel encontrar os veículos, dados incompletos"})
+               return res.status(400).send({hasError: true, erro: "Não foi possivel encontrar os veículos, dados incompletos"})
+          }
+
+          veiculo = await Veiculo.find({marca})
+
+          if(!veiculo){
+               logger.error({msg:"Veículos não encontrados, verifique seus dados"})
+               return res.status(400).send({erro:"Veículos não encontrados, verifique seus dados!"})
+          }
+          logger.info({msg:"Veículos encontrados!"})
           return res.send({veiculo})
 
      } catch(err){
@@ -51,9 +82,16 @@ const update = async (req, res) => {
      try {
           const {_id, placaUp, chassiUp, renavamUp, modeloUp, marcaUp, anoUp} = req.body
 
-          if(!await Exame.findOne({_id})){
+          if(!await Veiculo.findOne({_id})){
                logger.warn({msg:"Veículo não encontrado"})
                return res.status(400).send({hasError: true, erro: "Veículo não encontrado"})
+          }
+          renavam = renavamUp
+          veiculo = await Veiculo.findOne({renavam})
+
+          if(veiculo){
+               logger.error({msg:"Renavam existente!"})
+               return res.status(400).send({erro:"Renavam existente!"})
           }
 
           await Veiculo.findOneAndUpdate({_id: _id}, {placa: placaUp, chassi: chassiUp, renavam: renavamUp, modelo:modeloUp, marca: marcaUp, ano: anoUp})
@@ -93,4 +131,4 @@ const Delete = async (req, res)=>{
      }
 }
 
-module.exports = {create, read, update, Delete}
+module.exports = {create, read, update, Delete, readList}

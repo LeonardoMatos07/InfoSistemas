@@ -10,12 +10,16 @@ router.get('/veiculo/get', async (req, res)=>{
      await veiculoController.read(req, res);
 })
 
+router.get('/veiculoList/get', async (req, res)=>{
+     await veiculoController.readList(req, res);
+})
+
 router.put('/veiculo/update', async (req, res)=>{
      await veiculoController.update(req, res);
 })
 
 router.delete('/veiculo/delete', async (req, res)=>{
-     await veiculiController.Delete(req, res);
+     await veiculoController.Delete(req, res);
 })
 
 

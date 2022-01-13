@@ -1,7 +1,7 @@
 const mongoose = require('../../config/db');
 
 const VeiculoSchema = new mongoose.Schema({
-     plana:{
+     placa:{
           type:String,
           require:true,
      },
