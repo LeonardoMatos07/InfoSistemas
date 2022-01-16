@@ -62,14 +62,15 @@ const readList = async (req, res)=>{
                return res.status(400).send({hasError: true, erro: "Não foi possivel encontrar os veículos, dados incompletos"})
           }
 
-          veiculo = await Veiculo.find({marca})
+          veiculo = await Veiculo.findOne({marca})
 
           if(!veiculo){
                logger.error({msg:"Veículos não encontrados, verifique seus dados"})
                return res.status(400).send({erro:"Veículos não encontrados, verifique seus dados!"})
           }
+          veiculos = await Veiculo.find({marca})
           logger.info({msg:"Veículos encontrados!"})
-          return res.send({veiculo})
+          return res.send({veiculos})
 
      } catch(err){
           logger.error({msg:"Erro ao encontrar veículo"})

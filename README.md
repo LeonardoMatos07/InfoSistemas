@@ -1,4 +1,4 @@
-# Teste
+# Teste InfoSistemas
 
 ## Ferramentas utilizadas:
 
@@ -40,44 +40,78 @@
 ## Rotas e exemplos:
 
 <br />
-Para cadastrar num novo laboratório
+Para cadastrar um veiculo
 
-#### [POST] em /lab/create
+#### [POST] em /veiculo/create
 <br />
 
 ```json
 {
-	"name":"Lab1",
-	"endereco":"Rua Primeira",
-	"status": "ativo",
+	"placa": "JBL4545",
+	"chassi": "1234567",
+	"renavam": "1234",
+	"modelo": "Uno",
+	"marca": "Fiat",
+	"ano": "2016"
+
 }
 ```
 <br />
-Para buscar laboratórios ativos
+Para buscar veiculo pelo renavam
 
-#### [GET] em /lab/get
+#### [GET] em /veiculo/get
 
 
 ```json
 {
-	"status": "ativo"
+	"renavam": "123"
 	
 }
 ```
 <br />
-Para deletar um laboratório
+Para deletar um veiculo
 
-#### [DELETE] em /lab/delete
+#### [DELETE] em /veiculo/delete
 
 
 ```json
 {
-	"name": "Lab1"
+	"_id": "61df87b9a20c9eee8f82bda4"
 	
+}
+```
+<br />
+Para atualizar um veiculo
+
+#### [PUT] em /veiculo/update
+
+
+```json
+{
+	"_id": "61df87b9a20c9eee8f82bda4",
+	"placaUp": "jbl12345",
+	"chassiUp": "1233",
+	"renavamUp": "123",
+	"modeloUp": "gol",
+	"marcaUp": "VW",
+	"anoUp": "2015"
+
+	
+}
+```
+<br />
+Para listar relação de veiculos por marca
+
+#### [GET] em /veiculoList/get
+
+
+```json
+{
+		"marca": "Fiat"
 }
 ```
 <br />
 
 
 
-# Teste
+# Teste InfoSistemas
